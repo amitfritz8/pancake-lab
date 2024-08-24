@@ -1,0 +1,11 @@
+
+#intellij files
+.idea/*
+
+# Maven target
+target/*
+
+.DS_store
+
+
+
