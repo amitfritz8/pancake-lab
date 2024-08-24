@@ -1,0 +1,31 @@
+@startuml
+actor Disciple
+participant "OrderService" as OS
+participant "OrderRepository" as OR
+participant "Order" as O
+participant "ChefEventListener" as CEL
+participant "DeliveryEventListener" as DEL
+
+Disciple -> OS : createOrder(Building, RoomNumber)
+OS -> OR : save(Order)
+
+Disciple -> OS : addPancakeToOrder(UUID, Set<Ingredient>)
+OS -> OR : findById(UUID)
+OS -> O : addPancake(Pancake)
+O -> OR : save(Order)
+
+Disciple -> OS : completeOrder(UUID)
+OS -> OR : findById(UUID)
+OS -> O : completeOrder()
+O -> CEL : notify(OrderCompleted)
+O -> OR : save(Order)
+
+CEL -> O : prepareOrder()
+O -> DEL : notify(OrderPrepared)
+OS -> OR : save(Order)
+
+Disciple -> OS : deliverOrder(UUID)
+OS -> OR : findById(UUID)
+OS -> O : deliverOrder()
+O -> OR : delete(Order)
+@enduml

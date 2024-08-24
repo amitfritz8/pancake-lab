@@ -1,0 +1,100 @@
+@startuml
+class Order {
+    +UUID orderId
+    +Building building
+    +RoomNumber roomNumber
+    +List<Pancake> pancakes
+    -OrderState state
+    +addPancake(Pancake)
+    +completeOrder()
+    +cancelOrder()
+    +prepareOrder()
+    +deliverOrder()
+}
+
+class Pancake {
+    +UUID pancakeId
+    +Set<Ingredient> ingredients
+    +validateIngredients(Set<Ingredient>)
+}
+
+class Building {
+    +String name
+    +isValidBuilding(String)
+}
+
+class RoomNumber {
+    +String number
+    +isValidRoomNumber(String)
+}
+
+enum Ingredient {
+    DARK_CHOCOLATE
+    MILK_CHOCOLATE
+    HAZELNUTS
+    WHIPPED_CREAM
+    MUSTARD
+}
+
+interface OrderState {
+    +addPancake(Pancake)
+    +completeOrder()
+    +cancelOrder()
+    +prepareOrder()
+    +deliverOrder()
+}
+
+class CreatedState {
+    +Order order
+    +addPancake(Pancake)
+    +completeOrder()
+    +cancelOrder()
+    +prepareOrder()
+    +deliverOrder()
+}
+
+class CompletedState
+class CancelledState
+class PreparingState
+class DeliveredState
+
+interface DomainEventListener {
+    +handle(DomainEvent)
+}
+
+interface DomainEvent {
+}
+
+class OrderCompleted {
+    +UUID orderId
+}
+
+class OrderCancelled {
+    +UUID orderId
+}
+
+class OrderPrepared {
+    +UUID orderId
+}
+
+class OrderDelivered {
+    +UUID orderId
+}
+
+Order --> Building
+Order --> RoomNumber
+Order --> Pancake
+Order --> OrderState
+OrderState <|-- CreatedState
+OrderState <|-- CompletedState
+OrderState <|-- CancelledState
+OrderState <|-- PreparingState
+OrderState <|-- DeliveredState
+Pancake --> Ingredient
+DomainEvent <|-- OrderCompleted
+DomainEvent <|-- OrderCancelled
+DomainEvent <|-- OrderPrepared
+DomainEvent <|-- OrderDelivered
+DomainEventListener <|-- ChefEventListener
+DomainEventListener <|-- DeliveryEventListener
+@enduml

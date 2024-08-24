@@ -1,0 +1,24 @@
+@startuml
+actor Disciple
+actor Chef
+actor DeliveryPerson
+
+rectangle "Pancake Lab System" {
+    Disciple -> (Create Order) : specify building, room number
+    (Create Order) --> (Add Pancakes to Order)
+    (Add Pancakes to Order) --> (Complete or Cancel Order)
+    (Complete or Cancel Order) --> (Cancel Order) : if cancelled
+    (Complete or Cancel Order) --> (Complete Order) : if completed
+    (Complete Order) --> Chef : Notify Chef to Prepare Order
+    Chef --> (Prepare Order)
+    (Prepare Order) --> DeliveryPerson : Notify Delivery Person
+    DeliveryPerson --> (Deliver Order)
+    (Deliver Order) --> (Remove Order from Database)
+}
+
+rectangle "Database" {
+    (Cancel Order) --> (Remove Order from Database)
+    (Remove Order from Database) --> (Order History)
+}
+
+@enduml

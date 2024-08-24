@@ -1,0 +1,10 @@
+@startuml
+[*] --> CreatedState : Order Created
+CreatedState --> AddingPancakesState : Pancake Added
+AddingPancakesState --> CompletedState : Order Completed
+AddingPancakesState --> CancelledState : Order Cancelled
+CompletedState --> PreparingState : Order Prepared
+PreparingState --> DeliveredState : Order Delivered
+DeliveredState --> [*] : Order Completed
+CancelledState --> [*] : Order Cancelled
+@enduml
