@@ -5,6 +5,8 @@ import org.pancakelab.domain.PancakeOrderEntity;
 import org.pancakelab.domain.event.DomainEvent;
 import org.pancakelab.domain.event.DomainEventPublisher;
 import org.pancakelab.domain.event.EventType;
+import org.pancakelab.domain.exception.PancakeLabException;
+import org.pancakelab.domain.exception.PancakeLabExceptionEnum;
 import org.pancakelab.domain.model.pancakes.BasicPancake;
 import org.pancakelab.domain.model.pancakes.Pancake;
 import org.pancakelab.domain.model.pancakes.PancakeDecorator;
@@ -95,7 +97,7 @@ public class OrderDomainService {
 
     public void prepareOrder(UUID orderId) {
         if (!orderRepository.getCompletedOrders().contains(orderId)) {
-            throw new IllegalArgumentException("Order not completed: " + orderId);
+            throw new PancakeLabException(PancakeLabExceptionEnum.ORDER_COMPLETION_ERROR, "Order not completed: " + orderId);
         }
         orderRepository.getPreparedOrders().add(orderId);
         orderRepository.getCompletedOrders().remove(orderId);

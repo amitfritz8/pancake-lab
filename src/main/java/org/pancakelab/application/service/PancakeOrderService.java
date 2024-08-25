@@ -2,8 +2,7 @@ package org.pancakelab.application.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.pancakelab.domain.PancakeOrderEntity;
-import org.pancakelab.domain.model.pancakes.DefaultPancakeDecorator;
-import org.pancakelab.domain.model.pancakes.Pancake;
+import org.pancakelab.domain.exception.GlobalExceptionHandler;
 import org.pancakelab.domain.model.pancakes.PancakeDecorator;
 import org.pancakelab.domain.services.OrderDomainService;
 import org.pancakelab.domain.util.LockUtils;
@@ -40,11 +39,16 @@ public class PancakeOrderService {
      * @return The created Order object.
      */
     public PancakeOrderEntity createOrder(Building building, RoomNumber roomNumber) {
-        return LockUtils.executeWithLock(lock, () -> {
-            PancakeOrderEntity pancakeOrderEntity = orderDomainService.createOrder(building, roomNumber);
-            log.info("Order created: {}", pancakeOrderEntity.getOrderId());
-            return pancakeOrderEntity;
-        });
+        try {
+            return LockUtils.executeWithLock(lock, () -> {
+                PancakeOrderEntity pancakeOrderEntity = orderDomainService.createOrder(building, roomNumber);
+                log.info("Order created: {}", pancakeOrderEntity.getOrderId());
+                return pancakeOrderEntity;
+            });
+        } catch (Exception e) {
+            GlobalExceptionHandler.handle(e);
+            throw e;  // Re-throwing the exception after handling
+        }
     }
 
     /**
@@ -138,37 +142,4 @@ public class PancakeOrderService {
         return orderDomainService.listPreparedOrders();
     }
 
-    /**
-     * Applies the provided decorators to the pancake.
-     *
-     * @param pancake    The pancake to decorate.
-     * @param decorators The list of decorator classes to apply.
-     * @return The decorated pancake.
-     */
-    private Pancake decoratePancake(Pancake pancake, List<Class<? extends PancakeDecorator>> decorators) {
-        Pancake decoratedPancake = pancake;
-        if (decorators == null || decorators.isEmpty()) {
-            decoratedPancake = new DefaultPancakeDecorator(pancake);
-        } else {
-            for (Class<? extends PancakeDecorator> decorator : decorators) {
-                decoratedPancake = decoratePancake(decoratedPancake, decorator);
-            }
-        }
-        return decoratedPancake;
-    }
-
-    /**
-     * Applies a single decorator to the pancake.
-     *
-     * @param pancake   The pancake to decorate.
-     * @param decorator The decorator class to apply.
-     * @return The decorated pancake.
-     */
-    private Pancake decoratePancake(Pancake pancake, Class<? extends PancakeDecorator> decorator) {
-        try {
-            return decorator.getConstructor(Pancake.class).newInstance(pancake);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to decorate pancake", e);
-        }
-    }
 }

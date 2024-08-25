@@ -1,6 +1,8 @@
 package org.pancakelab.domain;
 
 import lombok.Data;
+import org.pancakelab.domain.exception.PancakeLabException;
+import org.pancakelab.domain.exception.PancakeLabExceptionEnum;
 import org.pancakelab.domain.model.pancakes.DefaultPancakeDecorator;
 import org.pancakelab.domain.model.pancakes.Pancake;
 import org.pancakelab.domain.model.pancakes.PancakeDecorator;
@@ -31,7 +33,7 @@ public class PancakeOrderEntity {
      */
     public PancakeOrderEntity(Building building, RoomNumber roomNumber) {
         if (building == null || roomNumber == null) {
-            throw new IllegalArgumentException("Building and RoomNumber cannot be null.");
+            throw new PancakeLabException(PancakeLabExceptionEnum.MISSING_DATA, "Building or room number cannot be null.");
         }
         this.orderId = UUID.randomUUID();
         this.building = building;
@@ -78,7 +80,7 @@ public class PancakeOrderEntity {
         try {
             return decorator.getConstructor(Pancake.class).newInstance(pancake);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to decorate pancake", e);
+            throw new PancakeLabException(PancakeLabExceptionEnum.PANCAKE_DECORATION_ERROR, "Failed to decorate pancake", e);
         }
     }
 }

@@ -1,5 +1,8 @@
 package org.pancakelab.domain.model.pancakes;
 
+import org.pancakelab.domain.exception.PancakeLabException;
+import org.pancakelab.domain.exception.PancakeLabExceptionEnum;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +34,7 @@ public abstract class PancakeDecorator implements Pancake {
 
     private void validateIngredients(Set<Ingredient> ingredients) {
         if (ingredients.contains(Ingredient.MUSTARD) && ingredients.contains(Ingredient.MILK_CHOCOLATE)) {
-            throw new IllegalArgumentException("Mustard and Milk Chocolate cannot be combined.");
+            throw new PancakeLabException(PancakeLabExceptionEnum.INVALID_DATA, "Mustard and Milk Chocolate cannot be combined.");
         }
     }
 }

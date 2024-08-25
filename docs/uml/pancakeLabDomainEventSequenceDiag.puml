@@ -2,7 +2,7 @@
 
 autonumber
 
- control DomainEventListener
+control DomainEventListener
 control DomainEventPublisher
 collections DomainEventDispatcher
 
