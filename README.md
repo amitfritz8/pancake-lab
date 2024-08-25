@@ -40,7 +40,8 @@ These instructions will help you set up and run the PancakeLab project on your l
 
 Here's a brief overview of the key files and directories in the project:
 
-\`\`\`
+
+```
 PancakeLab/
 │
 ├── Dockerfile                   # Docker configuration for containerization
@@ -54,7 +55,7 @@ PancakeLab/
 ├── docs/                        # UML diagrams and other documentation
 │   └── uml/                     # UML diagrams in .puml format
 └── logs/                        # Application log files
-\`\`\`
+```
 
 ### Key Components
 
