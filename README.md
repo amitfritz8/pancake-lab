@@ -2,7 +2,7 @@
 
 ## Description
 Our Coding Dojo uses Pancake Lab, a pancake shop software solution for ordering pancakes.
-The software solution can be used to order pancakes to the disciples' rooms and also
+The software solution can be used to pancakeOrderEntity pancakes to the disciples' rooms and also
 by the Sensei's Chef and Delivery service to prepare and deliver the pancakes.
 
 ### Use case
