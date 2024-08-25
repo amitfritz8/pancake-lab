@@ -1,7 +1,6 @@
 package org.pancakelab.domain;
 
 import lombok.Data;
-import org.pancakelab.domain.event.DomainEvent;
 import org.pancakelab.domain.model.pancakes.DefaultPancakeDecorator;
 import org.pancakelab.domain.model.pancakes.Pancake;
 import org.pancakelab.domain.model.pancakes.PancakeDecorator;
@@ -19,14 +18,10 @@ import java.util.UUID;
  */
 @Data
 public class PancakeOrderEntity {
-
     private final UUID orderId;
     private final Building building;
     private final RoomNumber roomNumber;
     private final List<Pancake> pancakes;
-    private boolean completed;
-    private boolean prepared;
-    private final List<DomainEvent> domainEvents = new ArrayList<>();  // Holds domain events
 
     /**
      * Creates a new Order.
@@ -42,8 +37,6 @@ public class PancakeOrderEntity {
         this.building = building;
         this.roomNumber = roomNumber;
         this.pancakes = new ArrayList<>();
-        this.completed = false;
-        this.prepared = false;
     }
 
     // Static factory method to create an order

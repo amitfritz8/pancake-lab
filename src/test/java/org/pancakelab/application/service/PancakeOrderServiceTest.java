@@ -177,6 +177,42 @@ public class PancakeOrderServiceTest {
         // tear down
     }
 
+    @Test
+    @org.junit.jupiter.api.Order(80)
+    public void GivenOrderExists_WhenAddingPancakes_ThenPancakesAddedToOrder_Test() {
+        // setup
+        pancakeOrderEntity = pancakeOrderService.createOrder(new Building("10"), new RoomNumber("20"));
+
+        // exercise
+        pancakeOrderService.addPancakes(pancakeOrderEntity.getOrderId(), List.of(DarkChocolateDecorator.class), 3);
+        pancakeOrderService.addPancakes(pancakeOrderEntity.getOrderId(), List.of(MilkChocolateDecorator.class), 3);
+
+        // verify
+        List<String> ordersPancakes = orderDomainService.viewOrder(pancakeOrderEntity.getOrderId());
+        assertEquals(6, ordersPancakes.size());
+
+        // tear down
+        pancakeOrderEntity = null;
+    }
+
+    @Test
+    @org.junit.jupiter.api.Order(90)
+    public void GivenOrderExists_WhenCompletingOrder_ThenOrderIsMarkedAsCompleted_Test() {
+        // setup
+        pancakeOrderEntity = pancakeOrderService.createOrder(new Building("10"), new RoomNumber("20"));
+        addPancakes();
+
+        // exercise
+        pancakeOrderService.completeOrder(pancakeOrderEntity.getOrderId());
+
+        // verify
+        Set<UUID> completedOrders = pancakeOrderService.listCompletedOrders();
+        assertTrue(completedOrders.contains(pancakeOrderEntity.getOrderId()));
+
+        // tear down
+        pancakeOrderEntity = null;
+    }
+
     private void addPancakes() {
         pancakeOrderService.addPancakes(pancakeOrderEntity.getOrderId(), List.of(DarkChocolateDecorator.class), 3);
         pancakeOrderService.addPancakes(pancakeOrderEntity.getOrderId(), List.of(MilkChocolateDecorator.class), 3);

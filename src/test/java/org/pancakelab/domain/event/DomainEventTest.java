@@ -8,48 +8,52 @@ import org.pancakelab.domain.event.listeners.DeliveryEventListener;
 
 import java.util.UUID;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class DomainEventTest {
 
-    private ChefEventListener chefListener;
-    private DeliveryEventListener deliveryListener;
+    private ChefEventListener chefEventListener;
+    private DeliveryEventListener deliveryEventListener;
     private CustomerEventListener customerEventListener;
 
     @BeforeEach
-    void setUp() {
-        chefListener = mock(ChefEventListener.class);
-        deliveryListener = mock(DeliveryEventListener.class);
+    void setupListener() {
+        chefEventListener = mock(ChefEventListener.class);
+        deliveryEventListener = mock(DeliveryEventListener.class);
         customerEventListener = mock(CustomerEventListener.class);
-        DomainEventPublisher.register(chefListener, EventType.ORDER_COMPLETED);
-        DomainEventPublisher.register(deliveryListener, EventType.ORDER_PREPARED);
+
+        DomainEventPublisher.register(chefEventListener, EventType.ORDER_COMPLETED);
+        DomainEventPublisher.register(deliveryEventListener, EventType.ORDER_PREPARED);
         DomainEventPublisher.register(customerEventListener, EventType.ORDER_DELIVERED);
     }
 
     @Test
-    void testPreparedEvent() {
+    void GivenOrderCompletedEvent_WhenPublished_ThenChefListenerIsInvoked_Test() {
         UUID orderId = UUID.randomUUID();
-        DomainEvent event = new DomainEvent(orderId, EventType.ORDER_PREPARED);
-        DomainEventPublisher.publish(event);
-        verify(deliveryListener, times(1)).handleEvent(event);
+        DomainEvent orderCompletedEvent = new DomainEvent(orderId, EventType.ORDER_COMPLETED);
+
+        DomainEventPublisher.publish(orderCompletedEvent);
+
+        verify(chefEventListener, times(1)).handleEvent(orderCompletedEvent);
     }
 
     @Test
-    void testOrderCompletedEvent() {
+    void GivenOrderPreparedEvent_WhenPublished_ThenDeliveryListenerIsInvoked_Test() {
         UUID orderId = UUID.randomUUID();
-        DomainEvent event = new DomainEvent(orderId, EventType.ORDER_COMPLETED);
-        DomainEventPublisher.publish(event);
-        verify(chefListener, times(1)).handleEvent(event);
+        DomainEvent orderPreparedEvent = new DomainEvent(orderId, EventType.ORDER_PREPARED);
+
+        DomainEventPublisher.publish(orderPreparedEvent);
+
+        verify(deliveryEventListener, times(1)).handleEvent(orderPreparedEvent);
     }
 
     @Test
-    void testOrderDeliveredEvent() {
+    void GivenOrderDeliveredEvent_WhenPublished_ThenCustomerListenerIsInvoked_Test() {
         UUID orderId = UUID.randomUUID();
-        DomainEvent event = new DomainEvent(orderId, EventType.ORDER_DELIVERED);
-        DomainEventPublisher.publish(event);
-        verify(customerEventListener, times(1)).handleEvent(event);
-    }
+        DomainEvent orderDeliveredEvent = new DomainEvent(orderId, EventType.ORDER_DELIVERED);
 
+        DomainEventPublisher.publish(orderDeliveredEvent);
+
+        verify(customerEventListener, times(1)).handleEvent(orderDeliveredEvent);
+    }
 }

@@ -1,0 +1,30 @@
+@startuml
+
+autonumber
+
+ control DomainEventListener
+control DomainEventPublisher
+collections DomainEventDispatcher
+
+group register
+
+    InterestedListener -> DomainEventListener : create an instance (listener)
+    InterestedListener -> DomainEventPublisher : register(event name, listener)
+
+    DomainEventPublisher -> DomainEventPublisher : find the dispatcher for "event name"
+    alt dispatcher already exist
+        DomainEventPublisher -> DomainEventDispatcher : register the listener
+        DomainEventDispatcher -> DomainEventPublisher : true
+        DomainEventPublisher -> InterestedListener : true (listener registered)
+    else dispatcher not found
+        autonumber 4
+        DomainEventPublisher -> DomainEventDispatcher : create a dispatcher
+        DomainEventPublisher -> DomainEventPublisher : register dispatcher for "event name"
+        DomainEventPublisher -> DomainEventDispatcher : register the listener
+        DomainEventDispatcher -> DomainEventPublisher : true
+        DomainEventPublisher -> InterestedListener : true (listener registered)
+    end
+end
+
+title Event Handler Register - Sequence\n\n
+@enduml
