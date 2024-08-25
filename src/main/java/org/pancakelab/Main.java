@@ -39,11 +39,11 @@ public class Main {
 
         // 3. Complete the order
         pancakeOrderService.completeOrder(pancakeOrderEntity.getOrderId());
-        log.info("Order completed.");
+
 
         // 4. Prepare the order
         pancakeOrderService.prepareOrder(pancakeOrderEntity.getOrderId());
-        log.info("Order prepared.");
+
 
         // 5. Deliver the order
         Object[] deliveryInfo = pancakeOrderService.deliverOrder(pancakeOrderEntity.getOrderId());
