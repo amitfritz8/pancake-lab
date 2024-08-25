@@ -27,7 +27,7 @@ These instructions will help you set up and run the PancakeLab project on your l
 1. **Clone the repository**:
    ```bash
    git clone -b dev git@github.com:amitfritz8/pancake-lab.git
-   cd PancakeLab
+   cd pancake-lab
    ```
 
 2. **Verify Java and Maven installation**:
@@ -40,7 +40,7 @@ These instructions will help you set up and run the PancakeLab project on your l
 
 Here's a brief overview of the key files and directories in the project:
 
-\`\`\`plaintext
+\`\`\`
 PancakeLab/
 │
 ├── Dockerfile                   # Docker configuration for containerization
@@ -58,7 +58,7 @@ PancakeLab/
 
 ### Key Components
 
-- **Domain Entities**: Classes representing the core business logic, such as `PancakeOrderEntity`, `RoomNumber`, `Building`.
+- **Domain Entities / Value Object**: Classes representing the core business logic, such as `PancakeOrderEntity`, `RoomNumber`, `Building`.
 - **Services**: Application services like `PancakeOrderService` handle the core operations.
 - **Event Listeners**: Implement domain event handling using the Observer pattern, such as `ChefEventListener`, `CustomerEventListener`.
 - **Repositories**: Interfaces and in-memory implementations for data persistence, like `PancakeRepository` and `OrderRepository`.
@@ -69,7 +69,7 @@ To build the PancakeLab project, follow these steps:
 
 1. **Navigate to the project directory**:
    ```bash
-   cd PancakeLab
+   cd pancake-lab
    ```
 
 2. **Build the project using Maven**:
@@ -86,7 +86,7 @@ This command will compile the source code, run the tests, and package the applic
 You can run the application locally using the following command:
 
 ```bash
-java -jar target/PancakeLab-1.0-SNAPSHOT.jar
+java -jar target/pancake-lab-1.0-SNAPSHOT.jar
 ```
 
 ### Docker
