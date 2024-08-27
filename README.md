@@ -142,7 +142,7 @@ The project includes several UML diagrams to help understand the system architec
 
 - **Class Diagrams**: Show the structure of the system in terms of classes and relationships.
 - **Use Case Diagrams**: Describe the functional requirements of the system.
-- **State Diagrams**: Explain the states of key entities in the system.
+- **Activity Diagrams**: Illustrate the flow of control or the sequence of activities in the system.
 - **Sequence Diagrams**: Detail the interaction between objects in various scenarios.
 
 These diagrams can be found in the `docs/uml/` directory.
