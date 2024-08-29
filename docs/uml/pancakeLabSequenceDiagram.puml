@@ -6,26 +6,37 @@ participant "Order" as O
 participant "ChefEventListener" as CEL
 participant "DeliveryEventListener" as DEL
 
+== Order Creation ==
 Disciple -> OS : createOrder(Building, RoomNumber)
 OS -> OR : save(Order)
 
+== Adding Pancakes to Order ==
 Disciple -> OS : addPancakeToOrder(UUID, Set<Ingredient>)
 OS -> OR : findById(UUID)
 OS -> O : addPancake(Pancake)
 O -> OR : save(Order)
 
+== Completing the Order ==
 Disciple -> OS : completeOrder(UUID)
 OS -> OR : findById(UUID)
 OS -> O : completeOrder()
 O -> CEL : notify(OrderCompleted)
 O -> OR : save(Order)
 
+== Preparing the Order ==
 CEL -> O : prepareOrder()
 O -> DEL : notify(OrderPrepared)
 OS -> OR : save(Order)
 
+== Delivering the Order ==
 Disciple -> OS : deliverOrder(UUID)
 OS -> OR : findById(UUID)
 OS -> O : deliverOrder()
+O -> OR : delete(Order)
+
+== Canceling the Order ==
+Disciple -> OS : cancelOrder(UUID)
+OS -> OR : findById(UUID)
+OS -> O : cancelOrder()
 O -> OR : delete(Order)
 @enduml
